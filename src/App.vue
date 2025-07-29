@@ -1,28 +1,67 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <router-view />
+
+    <template v-if="showProjectBoard">
+      <transition name="fade-transform" mode="out-in">
+        <projectBoard v-show="$route.path === '/index'" />
+      </transition>
+    </template>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import projectBoard from '@/components/projectBoard.vue';
+import { mapState } from 'vuex';
+import { defaultWhiteList, routerWhiteList } from '@/router/permission'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+  components: {
+    projectBoard,
+  },
+
+  data() {
+    return {
+      showProjectBoard: false,
+      routeRecode: []
+    }
+  },
+
+  computed: {
+    ...mapState('tagsView', ['cachedViews']),
+  },
+
+  watch: {
+    $route(value) {
+      if (defaultWhiteList.concat(routerWhiteList).indexOf(value.path) !== -1) {
+        this.showProjectBoard = false;
+      } else {
+        this.showProjectBoard = true;
+      }
+    },
+
+    cachedViews(value) {
+      if (value.includes('Index') && !this.routeRecode.includes('Index')) {
+        this.showProjectBoard = false;
+
+        this.$nextTick(() => {
+          this.showProjectBoard = true;
+        })
+      }
+
+      this.routeRecode = JSON.parse(JSON.stringify(value))
+    },
+  },
+
+  metaInfo() {
+    return {
+      title: this.$store.state.settings.dynamicTitle && this.$store.state.settings.title,
+      titleTemplate: (title) => {
+        return title ? `${title} - ${process.env.VUE_APP_TITLE}` : process.env.VUE_APP_TITLE;
+      },
+    };
+  },
+};
+</script>
