@@ -1,7 +1,8 @@
 {
   "name": "ncc-file-upload-tool",
   "version": "1.0.0",
-  "description": "快捷开发平台",
+  "description": "批量上传工具",
+  "productName": "批量上传工具",
   "author": "Dave",
   "license": "MIT",
   "scripts": {

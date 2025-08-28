@@ -14,6 +14,9 @@
 import projectBoard from '@/components/projectBoard.vue';
 import { mapState } from 'vuex';
 import { defaultWhiteList, routerWhiteList } from '@/router/permission'
+import { setToken } from 'ctcemti-ui/src/utils/auth'
+
+const { ipcRenderer } = require('electron');
 
 export default {
   name: 'App',
@@ -27,6 +30,25 @@ export default {
       showProjectBoard: false,
       routeRecode: []
     }
+  },
+
+  created() {
+    ipcRenderer.on('renderer-scheme', (event, args) => {
+      console.log('renderer-scheme', args)
+
+      let urls = args.split('/');
+      let tokenItem = urls.find(item => item.includes('Admin-Token'));
+
+      if (tokenItem) {
+        let tokens = tokenItem.split('=');
+        let token = tokens[1];
+        setToken(token)
+
+        if (this.$route.path === '/login') {
+          this.$router.push('/completionData/index')
+        }
+      }
+    });
   },
 
   computed: {

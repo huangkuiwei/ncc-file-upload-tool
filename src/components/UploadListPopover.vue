@@ -137,18 +137,32 @@ export default {
   },
 
   watch: {
-    async uploadFileList(value) {
-      let hasUploading = value.find((item) => item.status === 'uploading');
+    uploadFileList: [
+      {
+        async handler(value) {
+          let hasUploading = value.find((item) => item.status === 'uploading');
 
-      if (!hasUploading) {
-        const nextUploadFile = value.find((item) => item.status === 'ready');
+          if (!hasUploading) {
+            const nextUploadFile = value.find((item) => item.status === 'ready');
 
-        if (nextUploadFile) {
-          nextUploadFile.status = 'uploading';
-          await singleFilePartPointUpload(nextUploadFile);
-        }
+            if (nextUploadFile) {
+              nextUploadFile.status = 'uploading';
+              await singleFilePartPointUpload(nextUploadFile);
+            }
+          }
+        },
+      },
+      {
+        async handler(value) {
+          if (!value) {
+            return;
+          }
+
+          localStorage.setItem('uploadFileList', JSON.stringify(value));
+        },
+        deep: true,
       }
-    },
+    ],
   },
 
   methods: {

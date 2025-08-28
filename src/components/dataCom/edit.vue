@@ -286,6 +286,8 @@ export default {
                 taskId: Date.now().toString() + file.uid,
                 file: file,
                 filename: file.name,
+                filePath: file.path,
+                webkitRelativePath: file.webkitRelativePath,
                 size: file.size,
                 progress: 0, // 0 - 100
                 status: 'ready', // ready error success uploading pause

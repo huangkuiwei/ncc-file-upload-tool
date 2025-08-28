@@ -1,8 +1,37 @@
+const fs = require('fs')
+
+let uploadFileListStr = localStorage.getItem('uploadFileList');
+let uploadFileList = [];
+
+if (uploadFileListStr) {
+  uploadFileList = JSON.parse(uploadFileListStr);
+
+  uploadFileList.forEach((item) => {
+    if (item.status !== 'success') {
+      item.status = 'ready';
+
+      let buffer = fs.readFileSync(item.filePath)
+      console.log('buffer', buffer)
+
+      if (buffer) {
+        const uint8Array = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+
+        const file = new File([uint8Array], item.filename, {
+          type: '',
+          lastModified: item.file.lastModified
+        });
+
+        item.file = file
+      }
+    }
+  });
+}
+
 const mdm = {
   namespaced: true,
 
   state: {
-    uploadFileList: [],
+    uploadFileList: uploadFileList,
     showUploadBox: false,
   },
 

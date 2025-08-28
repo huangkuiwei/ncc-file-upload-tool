@@ -1,9 +1,32 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, Menu } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+import path from 'path'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+
+let win = null
+const gotTheLock = app.requestSingleInstanceLock()
+
+if (!gotTheLock) {
+  app.quit()
+} else {
+  app.on('second-instance', (event, argv) => {
+    console.log(argv)
+
+    if (win) {
+      win.webContents.send('renderer-scheme', argv[argv.length - 1])
+
+      if (win.isMinimized()) win.restore()
+      if (win.isVisible()) {
+        win.focus()
+      } else {
+        win.show()
+        win.setSkipTaskbar(false)
+      }
+    }
+  })
+}
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -12,17 +35,19 @@ protocol.registerSchemesAsPrivileged([
 
 async function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
-      contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
+      nodeIntegration: true,
+      nodeIntegrationInWorker: true,
+      contextIsolation: false
     }
   })
+
+  win.maximize()
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -31,7 +56,15 @@ async function createWindow() {
   } else {
     createProtocol('app')
     // Load the index.html when not in development
-    win.loadURL('app://./index.html')
+    await win.loadURL('app://./index.html')
+  }
+
+  if (process.platform === 'win32') {
+    let arg = process.argv[1]
+
+    setTimeout(() => {
+      win.webContents.send('renderer-scheme', arg);
+    }, 500)
   }
 }
 
@@ -54,16 +87,35 @@ app.on('activate', () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
-  if (isDevelopment && !process.env.IS_TEST) {
-    // Install Vue Devtools
-    try {
-      await installExtension(VUEJS_DEVTOOLS)
-    } catch (e) {
-      console.error('Vue Devtools failed to install:', e.toString())
-    }
-  }
+  Menu.setApplicationMenu(null)
   createWindow()
+
+  if (app.isPackaged) {
+    app.setAsDefaultProtocolClient('ncc')
+  } else {
+    app.setAsDefaultProtocolClient('ncc-test', process.execPath, [
+      path.resolve(process.argv[1])
+    ])
+  }
 })
+
+app.on('will-finish-launching', () => {
+  app.on('open-url', (event, url) => {
+    event.preventDefault();
+
+    if (win) {
+      win.webContents.send('renderer-scheme', url);
+
+      if (win.isMinimized()) win.restore()
+      if (win.isVisible()) {
+        win.focus()
+      } else {
+        win.show()
+        win.setSkipTaskbar(false)
+      }
+    }
+  });
+});
 
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {

@@ -17,42 +17,42 @@
               上传
             </action-button>
           </el-col>
-          <el-col :span="1.5">
-            <action-button
-              :hashKey="`mdm:mdm_file_run:share${permissions}`"
-              plain
-              type="primary"
-              :disabled="multiple"
-              @click="shareFile()"
-              v-hasPermi="[`mdm:mdm_file_run:share${permissions}`]"
-            >
-              分享
-            </action-button>
-          </el-col>
-          <el-col :span="1.5">
-            <action-button
-              :hashKey="`mdm:mdm_file_run:download${permissions}`"
-              plain
-              type="primary"
-              :disabled="multiple"
-              @click="downloadFile()"
-              v-hasPermi="[`mdm:mdm_file_run:download${permissions}`]"
-            >
-              下载
-            </action-button>
-          </el-col>
-          <el-col :span="1.5">
-            <action-button
-              :hashKey="`mdm:mdm_file_run:del${permissions}`"
-              plain
-              type="primary"
-              :disabled="multiple"
-              @click="deleteFile()"
-              v-hasPermi="[`mdm:mdm_file_run:del${permissions}`]"
-            >
-              删除
-            </action-button>
-          </el-col>
+          <!--<el-col :span="1.5">-->
+          <!--  <action-button-->
+          <!--    :hashKey="`mdm:mdm_file_run:share${permissions}`"-->
+          <!--    plain-->
+          <!--    type="primary"-->
+          <!--    :disabled="multiple"-->
+          <!--    @click="shareFile()"-->
+          <!--    v-hasPermi="[`mdm:mdm_file_run:share${permissions}`]"-->
+          <!--  >-->
+          <!--    分享-->
+          <!--  </action-button>-->
+          <!--</el-col>-->
+          <!--<el-col :span="1.5">-->
+          <!--  <action-button-->
+          <!--    :hashKey="`mdm:mdm_file_run:download${permissions}`"-->
+          <!--    plain-->
+          <!--    type="primary"-->
+          <!--    :disabled="multiple"-->
+          <!--    @click="downloadFile()"-->
+          <!--    v-hasPermi="[`mdm:mdm_file_run:download${permissions}`]"-->
+          <!--  >-->
+          <!--    下载-->
+          <!--  </action-button>-->
+          <!--</el-col>-->
+          <!--<el-col :span="1.5">-->
+          <!--  <action-button-->
+          <!--    :hashKey="`mdm:mdm_file_run:del${permissions}`"-->
+          <!--    plain-->
+          <!--    type="primary"-->
+          <!--    :disabled="multiple"-->
+          <!--    @click="deleteFile()"-->
+          <!--    v-hasPermi="[`mdm:mdm_file_run:del${permissions}`]"-->
+          <!--  >-->
+          <!--    删除-->
+          <!--  </action-button>-->
+          <!--</el-col>-->
           <el-col :span="1.5">
             <action-button
               :hashKey="`mdm:mdm_file_run:save${permissions}`"
@@ -74,18 +74,18 @@
             </el-tooltip>
           </el-col>
 
-          <right-toolbar :show-more="false" :showSearchClear="false" @queryTable="handleQuery" @reset="resetQuery">
-            <template>
-              <el-form-item label="文件名称：" prop="name">
-                <el-input
-                  v-model="conPO.filename"
-                  placeholder="请输入文件名称"
-                  clearable
-                  @keyup.enter.native="handleQuery"
-                />
-              </el-form-item>
-            </template>
-          </right-toolbar>
+          <!--<right-toolbar :show-more="false" :showSearchClear="false" @queryTable="handleQuery" @reset="resetQuery">-->
+          <!--  <template>-->
+          <!--    <el-form-item label="文件名称：" prop="name">-->
+          <!--      <el-input-->
+          <!--        v-model="conPO.filename"-->
+          <!--        placeholder="请输入文件名称"-->
+          <!--        clearable-->
+          <!--        @keyup.enter.native="handleQuery"-->
+          <!--      />-->
+          <!--    </el-form-item>-->
+          <!--  </template>-->
+          <!--</right-toolbar>-->
         </el-row>
       </el-form>
 
@@ -189,30 +189,30 @@
           </template>
         </el-table-column>
         <el-table-column label="修改时间" align="center" prop="updateDate" width="160" />
-        <el-table-column label="操作" align="center" width="160">
-          <template slot-scope="scope">
-            <div class="options">
-              <i class="el-icon el-icon-share" title="分享" @click="shareFile(scope.row)" />
-              <i
-                class="el-icon el-icon-delete"
-                title="删除"
-                v-hasPermi="[`mdm:mdm_file_run:del${permissions}`]"
-                @click="deleteFile(scope.row)"
-              />
-              <i
-                class="el-icon el-icon-download"
-                title="下载"
-                v-hasPermi="[`mdm:mdm_file_run:download${permissions}`]"
-                @click="downloadFile(scope.row)"
-              />
+        <!--<el-table-column label="操作" align="center" width="160">-->
+        <!--  <template slot-scope="scope">-->
+        <!--    <div class="options">-->
+        <!--      <i class="el-icon el-icon-share" title="分享" @click="shareFile(scope.row)" />-->
+        <!--      <i-->
+        <!--        class="el-icon el-icon-delete"-->
+        <!--        title="删除"-->
+        <!--        v-hasPermi="[`mdm:mdm_file_run:del${permissions}`]"-->
+        <!--        @click="deleteFile(scope.row)"-->
+        <!--      />-->
+        <!--      <i-->
+        <!--        class="el-icon el-icon-download"-->
+        <!--        title="下载"-->
+        <!--        v-hasPermi="[`mdm:mdm_file_run:download${permissions}`]"-->
+        <!--        @click="downloadFile(scope.row)"-->
+        <!--      />-->
 
-              <template v-if="!scope.row.filesuffix">
-                <i class="el-icon el-icon-edit" title="编辑文件夹" @click="editFolder(scope.row)" />
-                <i class="el-icon el-icon-edit-outline" title="移动文件夹" @click="removeFolder(scope.row)" />
-              </template>
-            </div>
-          </template>
-        </el-table-column>
+        <!--      <template v-if="!scope.row.filesuffix">-->
+        <!--        <i class="el-icon el-icon-edit" title="编辑文件夹" @click="editFolder(scope.row)" />-->
+        <!--        <i class="el-icon el-icon-edit-outline" title="移动文件夹" @click="removeFolder(scope.row)" />-->
+        <!--      </template>-->
+        <!--    </div>-->
+        <!--  </template>-->
+        <!--</el-table-column>-->
       </mti-table>
     </div>
 
@@ -684,6 +684,7 @@ export default {
 
   > .container-left {
     width: 250px;
+    display: none;
     flex-shrink: 0;
     border: 1px solid #cccccc;
   }

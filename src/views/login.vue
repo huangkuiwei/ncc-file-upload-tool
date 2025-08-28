@@ -114,21 +114,21 @@
         </template>
 
         <!--   移动端二维码   -->
-        <template v-if="isAppCode">
-          <slot>
-            <h3 class="title">移动端二维码</h3>
-            <el-row class="mti-app-code-content">
-              <el-col :span="12">
-                <mti-qr-code id="iosCode" :url="appCodeData.iosUrl" colorDark="#1181fa"></mti-qr-code>
-                <div class="title">IOS二维码</div>
-              </el-col>
-              <el-col :span="12">
-                <mti-qr-code id="androidCode" :url="appCodeData.androidUrl"></mti-qr-code>
-                <div class="title">Android二维码</div>
-              </el-col>
-            </el-row>
-          </slot>
-        </template>
+        <!--<template v-if="isAppCode">-->
+        <!--  <slot>-->
+        <!--    <h3 class="title">移动端二维码</h3>-->
+        <!--    <el-row class="mti-app-code-content">-->
+        <!--      <el-col :span="12">-->
+        <!--        <mti-qr-code id="iosCode" :url="appCodeData.iosUrl" colorDark="#1181fa"></mti-qr-code>-->
+        <!--        <div class="title">IOS二维码</div>-->
+        <!--      </el-col>-->
+        <!--      <el-col :span="12">-->
+        <!--        <mti-qr-code id="androidCode" :url="appCodeData.androidUrl"></mti-qr-code>-->
+        <!--        <div class="title">Android二维码</div>-->
+        <!--      </el-col>-->
+        <!--    </el-row>-->
+        <!--  </slot>-->
+        <!--</template>-->
       </el-form>
     </div>
 
@@ -201,14 +201,14 @@ import { encrypt, decrypt } from 'ctcemti-ui/src/utils/jsencrypt';
 import { updateUserPwdNotLogin } from 'ctcemti-ui/src/api/system/user';
 import { validateSpecialKeyTypes } from 'ctcemti-ui/src/views/system/settings/validate';
 import MtiImg from 'ctcemti-ui/src/components/Img/index.vue';
-import MtiQrCode from 'ctcemti-ui/src/components/QRCode/index.vue';
+// import MtiQrCode from 'ctcemti-ui/src/components/QRCode/index.vue';
 import { StringUtil } from 'ctcemti-ui/src/utils/base/StringUtil';
 
 export default {
   name: 'Login',
   components: {
     MtiImg,
-    MtiQrCode,
+    // MtiQrCode,
   },
   props: {
     /** 是否打开移动端二维码 */
@@ -498,7 +498,7 @@ export default {
             .dispatch('Login', this.loginFormModel)
             .then(() => {
               this.loading = false;
-              this.$router.push({ path: this.redirect || '/' }).catch(() => {});
+              this.$router.push({ path: this.redirect || '/completionData/index' }).catch(() => {});
             })
             .catch((err) => {
               this.loading = false;

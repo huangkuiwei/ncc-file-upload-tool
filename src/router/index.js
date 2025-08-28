@@ -70,19 +70,19 @@ export const constantRoutes = [
     component:  () => import('ctcemti-ui/src/views/error/401'),
     hidden: true
   },
-  {
-    path: '',
-    component: Layout,
-    redirect: 'index',
-    children: [
-      {
-        path: 'index',
-        component:  () => import('@/views/projectBoard'),
-        name: 'Index',
-        meta: { title: '项目看板', icon: 'dashboard', affix: true }
-      }
-    ]
-  },
+  // {
+  //   path: '',
+  //   component: Layout,
+  //   redirect: 'index',
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component:  () => import('@/views/projectBoard'),
+  //       name: 'Index',
+  //       meta: { title: '项目看板', icon: 'dashboard', affix: true }
+  //     }
+  //   ]
+  // },
   {
     path: '/user',
     component: Layout,

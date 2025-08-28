@@ -98,14 +98,14 @@ export async function singleFilePartPointUpload(uploadItem) {
   // oss
   else if (uploadItem.uploadType === 'oss') {
     let partSize = 8; //MB
-    let partNum = Math.ceil(uploadItem.file.size / 1024 / 1024 / partSize);
+    let partNum = Math.ceil(uploadItem.size / 1024 / 1024 / partSize);
 
     if (!uploadItem.parts.length) {
       let identifier = await request({
         url: '/mdm/mdm_file_run/getMD5FileIdentifier',
         method: 'get',
         params: {
-          fileName: uploadItem.file.name,
+          fileName: uploadItem.filename,
         },
       });
 
@@ -116,9 +116,9 @@ export async function singleFilePartPointUpload(uploadItem) {
         method: 'get',
         params: {
           identifier: uploadItem.fileMd5,
-          fileName: uploadItem.file.name,
-          folderPath: uploadItem.file.webkitRelativePath || uploadItem.file.name,
-          totalSize: uploadItem.file.size,
+          fileName: uploadItem.filename,
+          folderPath: uploadItem.webkitRelativePath || uploadItem.filename,
+          totalSize: uploadItem.size,
           chunkSize: partSize * 1024 * 1024,
           isPrivateBucket: false,
           id: uploadItem.id,

@@ -141,5 +141,25 @@ module.exports = {
           }
         }
       )
-  }
+  },
+  pluginOptions: {
+    electronBuilder: {
+      nodeIntegration: true,
+      builderOptions: {
+        productName: '批量上传工具',
+        win: {
+          target: 'nsis',
+          icon: 'public/icon.ico'
+        },
+        nsis: {
+          allowElevation: true,
+          allowToChangeInstallationDirectory: false,
+          oneClick: false,
+          perMachine: true,
+          createDesktopShortcut: true,
+          shortcutName: '批量上传工具'
+        },
+      }
+    }
+  },
 }

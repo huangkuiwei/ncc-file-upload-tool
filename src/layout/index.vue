@@ -12,15 +12,15 @@
     </mti-layout>
 -->
 
-    <mti-layout :search="false" :sizeSelect="false" :screenFull="false">
+    <mti-layout :search="false" :sizeSelect="false" :screenFull="false" :messageCount="false">
       <div slot="logo" class="logo-wrapper" style="display: flex;align-items: center">
         <img src="@/assets/images/ncc.png" style="width: 50px;height: 50px" alt="">
         <span style="font-weight: bold;color:#fff;font-size: 20px;margin-left: 10px">NCC项目管理平台</span>
       </div>
 
-      <div class="share-btn">
-        <i class="el-icon el-icon-share" @click="jumpShare"></i>
-      </div>
+      <!--<div class="share-btn">-->
+      <!--  <i class="el-icon el-icon-share" @click="jumpShare"></i>-->
+      <!--</div>-->
 
       <UploadListPopover />
     </mti-layout>
